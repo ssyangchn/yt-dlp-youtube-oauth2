@@ -127,7 +127,7 @@ class YouTubeOAuth2Handler(InfoExtractor):
                 data=json.dumps({
                     'client_id': _CLIENT_ID,
                     'client_secret': _CLIENT_SECRET,
-                    'code': code_response['device_code'],
+                    'device_code': code_response['device_code'],
                     'grant_type': 'http://oauth.net/grant_type/device/1.0'
                 }).encode(),
                 headers={'Content-Type': 'application/json', '__youtube_oauth__': True})
