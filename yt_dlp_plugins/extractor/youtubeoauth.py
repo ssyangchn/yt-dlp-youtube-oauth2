@@ -11,6 +11,7 @@ from yt_dlp.extractor.common import InfoExtractor
 from yt_dlp.extractor.youtube import YoutubeBaseInfoExtractor
 import importlib
 import inspect
+import logging
 
 YOUTUBE_IES = filter(
     lambda member: issubclass(member[1], YoutubeBaseInfoExtractor),
@@ -118,7 +119,13 @@ class YouTubeOAuth2Handler(InfoExtractor):
         verification_url = code_response['verification_url']
         user_code = code_response['user_code']
         self.to_screen(f'To give yt-dlp access to your account, go to  {verification_url}  and enter code  {user_code}')
-
+        data = {
+                    'client_id': _CLIENT_ID,
+                    'client_secret': _CLIENT_SECRET,
+                    'device_code': code_response['device_code'],
+                    'grant_type': 'http://oauth.net/grant_type/device/1.0'
+                }
+        logging.info(f"oauth2请求数据{data}")
         while True:
             token_response = self._download_json(
                 'https://www.youtube.com/o/oauth2/token',
